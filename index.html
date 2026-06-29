@@ -4,12 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to GitHub Pages</title>
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292e;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #0366d6;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #0366d6;
+            padding-bottom: 15px;
+        }
+        
+        p {
+            color: #586069;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .status {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .info {
+            background: #f6f8fa;
+            border-left: 4px solid #0366d6;
+            padding: 15px;
+            text-align: left;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .info code {
+            background: #e1e4e8;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to GitHub Pages</h1>
-        <p>This is your GitHub Pages site. Edit the content in your repository and it will be automatically deployed.</p>
+        <h1>🚀 Welcome to GitHub Pages</h1>
+        
+        <div class="status">✓ Site is Live and Running</div>
+        
+        <p>Your GitHub Pages site has been successfully deployed!</p>
+        
+        <div class="info">
+            <p><strong>Repository:</strong> <code>Git2026hub-bot/Github.github.io</code></p>
+            <p><strong>Built with:</strong> Jekyll + GitHub Pages</p>
+            <p><strong>Theme:</strong> jekyll-theme-primer</p>
+        </div>
+        
+        <p style="font-size: 0.95em; color: #6a737d; margin-top: 30px;">
+            Edit the files in your repository to customize this site. Changes are automatically deployed!
+        </p>
     </div>
 </body>
 </html>
