@@ -9,3 +9,5 @@ plugins:
 markdown: kramdown
 source: .
 destination: _site
+keep_files:
+  - assets
