@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>git;repo — invite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D1117;
+    --card:#161B22;
+    --card-2:#1C2128;
+    --border:#30363D;
+    --border-soft:#21262D;
+    --text:#E6EDF3;
+    --muted:#8B949E;
+    --faint:#6E7681;
+    --green:#3FB950;
+    --green-dim:#2EA043;
+    --purple:#A371F7;
+    --amber:#D29922;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    display:flex;
+    justify-content:center;
+    padding:40px 16px;
+  }
+  .poster{
+    width:780px;
+    max-width:100%;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,0.6);
+  }
+
+  /* terminal title bar */
+  .titlebar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 18px;
+    background:var(--card-2);
+    border-bottom:1px solid var(--border);
+  }
+  .dot{width:11px; height:11px; border-radius:50%;}
+  .dot.r{background:#FF5F56;}
+  .dot.y{background:#FFBD2E;}
+  .dot.g{background:#27C93F;}
+  .titlebar .path{
+    margin-left:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--faint);
+  }
+  .download-btn{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--green);
+    background:rgba(63,185,80,0.08);
+    border:1px solid rgba(63,185,80,0.35);
+    border-radius:6px;
+    padding:5px 11px;
+    text-decoration:none;
+    transition:background 0.15s;
+  }
+  .download-btn:hover{
+    background:rgba(63,185,80,0.18);
+  }
+
+  /* hero */
+  .hero{
+    padding:42px 48px 30px;
+    border-bottom:1px solid var(--border-soft);
+    position:relative;
+  }
+  .invite-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--green);
+    background:rgba(63,185,80,0.08);
+    border:1px solid rgba(63,185,80,0.35);
+    border-radius:20px;
+    padding:5px 12px;
+    margin-bottom:22px;
+    letter-spacing:0.02em;
+  }
+  .invite-tag .pulse{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 0 rgba(63,185,80,0.6);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(63,185,80,0.5);}
+    70%{box-shadow:0 0 0 7px rgba(63,185,80,0);}
+    100%{box-shadow:0 0 0 0 rgba(63,185,80,0);}
+  }
+  .prompt-line{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--faint);
+    margin-bottom:10px;
+  }
+  .prompt-line .sym{color:var(--green);}
+  h1{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:800;
+    font-size:58px;
+    line-height:1.02;
+    letter-spacing:-0.01em;
+  }
+  h1 .sep{color:var(--faint); font-weight:400;}
+  h1 .repo{color:var(--green);}
+  .tagline{
+    margin-top:14px;
+    font-size:16.5px;
+    color:var(--muted);
+    max-width:480px;
+    line-height:1.55;
+  }
+  .tagline b{color:var(--text); font-weight:600;}
+
+  .meta-row{
+    display:flex;
+    gap:28px;
+    margin-top:30px;
+    flex-wrap:wrap;
+  }
+  .meta-item{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+  }
+  .meta-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    color:var(--faint);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  .meta-value{
+    font-size:15px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .meta-value.accent{color:var(--green);}
+
+  /* body section */
+  .body-section{
+    padding:38px 48px;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:24px;
+  }
+  .section-title{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--purple);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-weight:700;
+  }
+  .branch-note{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--faint);
+  }
+
+  /* git log / timeline */
+  .gitlog{
+    position:relative;
+    padding-left:30px;
+  }
+  .gitlog::before{
+    content:'';
+    position:absolute;
+    left:6px;
+    top:6px;
+    bottom:6px;
+    width:2px;
+    background:linear-gradient(to bottom, var(--green-dim), var(--purple));
+    border-radius:2px;
+  }
+  .commit{
+    position:relative;
+    padding-bottom:26px;
+  }
+  .commit:last-child{padding-bottom:0;}
+  .commit::before{
+    content:'';
+    position:absolute;
+    left:-30px;
+    top:3px;
+    width:13px;
+    height:13px;
+    border-radius:50%;
+    background:var(--card);
+    border:3px solid var(--green-dim);
+  }
+  .commit.merge::before{
+    border-color:var(--purple);
+    background:var(--purple);
+  }
+  .commit-top{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .commit-time{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--green);
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .commit.merge .commit-time{color:var(--purple);}
+  .commit-hash{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--faint);
+  }
+  .commit-msg{
+    font-size:15.5px;
+    font-weight:600;
+    color:var(--text);
+    margin-top:5px;
+  }
+  .commit-desc{
+    font-size:13.5px;
+    color:var(--muted);
+    margin-top:4px;
+    line-height:1.5;
+  }
+  .commit-tag{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    padding:2px 8px;
+    border-radius:10px;
+    margin-top:8px;
+    background:rgba(163,113,247,0.1);
+    border:1px solid rgba(163,113,247,0.35);
+    color:var(--purple);
+  }
+  .commit-tag.food{
+    background:rgba(210,153,34,0.1);
+    border-color:rgba(210,153,34,0.4);
+    color:var(--amber);
+  }
+
+  /* footer / details grid */
+  .details{
+    padding:34px 48px 40px;
+    background:var(--card-2);
+    border-top:1px solid var(--border-soft);
+  }
+  .details-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:30px;
+  }
+  .detail-block .section-title{margin-bottom:14px;}
+  .detail-line{
+    font-size:14px;
+    color:var(--muted);
+    line-height:1.7;
+  }
+  .detail-line b{color:var(--text); font-weight:600;}
+  .detail-line .mono{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--text);
+    background:var(--card);
+    border:1px solid var(--border);
+    padding:1px 7px;
+    border-radius:5px;
+  }
+  .host-list{margin-top:8px;}
+  .host-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:9px;
+  }
+  .host-avatar{
+    width:30px; height:30px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    font-weight:700;
+    flex-shrink:0;
+  }
+  .host-avatar.host{background:rgba(63,185,80,0.15); color:var(--green); border:1px solid rgba(63,185,80,0.4);}
+  .host-avatar.team{background:rgba(163,113,247,0.15); color:var(--purple); border:1px solid rgba(163,113,247,0.4);}
+  .host-name{font-size:13.5px; font-weight:600; color:var(--text);}
+  .host-role{font-size:11.5px; color:var(--faint);}
+
+  .footer-bar{
+    margin-top:30px;
+    padding-top:24px;
+    border-top:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .recipient{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--faint);
+  }
+  .recipient .name{color:var(--green); font-weight:600;}
+  .rsvp-stamp{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--amber);
+    border:1px dashed rgba(210,153,34,0.5);
+    padding:5px 12px;
+    border-radius:6px;
+    letter-spacing:0.04em;
+  }
+
+  @media (max-width:640px){
+    .hero, .body-section, .details{padding:28px 24px;}
+    h1{font-size:38px;}
+    .details-grid{grid-template-columns:1fr; gap:26px;}
+    .meta-row{gap:20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="poster">
+
+  <div class="titlebar">
+    <div class="dot r"></div>
+    <div class="dot y"></div>
+    <div class="dot g"></div>
+    <div class="path">~/events/git-repo &nbsp;—&nbsp; invite-only.md</div>
+    <a class="download-btn" href="git-repo-invite-poster.pdf" download>⭳ download PDF</a>
+  </div>
+
+  <div class="hero">
+    <div class="invite-tag"><span class="pulse"></span> private repository · invite only</div>
+    <div class="prompt-line"><span class="sym">$</span> git clone event/centurion</div>
+    <h1>git<span class="sep">:</span><span class="repo">repo</span></h1>
+    <p class="tagline">A hands-on day with the <b>GitHub team</b> — version control, branching, pull requests and real collaboration workflows, taught properly, from first commit to first merge.</p>
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">date</span>
+        <span class="meta-value">Saturday — TBC, 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">time</span>
+        <span class="meta-value accent">11:00 — 18:00</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">venue</span>
+        <span class="meta-value">Candlewoods Boutique Venue</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">location</span>
+        <span class="meta-value">Centurion, Gauteng</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <div class="section-head">
+      <span class="section-title">git log --branch=schedule</span>
+      <span class="branch-note">main ← session/01..05</span>
+    </div>
+
+    <div class="gitlog">
+
+      <div class="commit">
+        <div class="commit-top">
+          <span class="commit-time">11:00 – 11:45</span>
+          <span class="commit-hash">#a1f3c2</span>
+        </div>
+        <div class="commit-msg">init: welcome &amp; setting up your environment</div>
+        <div class="commit-desc">Registration, intros from the GitHub team, and getting Git installed and configured on every laptop in the room.</div>
+      </div>
+
+      <div class="commit">
+        <div class="commit-top">
+          <span class="commit-time">11:45 – 13:00</span>
+          <span class="commit-hash">#7be091</span>
+        </div>
+        <div class="commit-msg">feat: git fundamentals</div>
+        <div class="commit-desc">Repositories, commits, staging, .gitignore, and reading a commit history like a story instead of a mystery.</div>
+      </div>
+
+      <div class="commit merge">
+        <div class="commit-top">
+          <span class="commit-time">13:00 – 14:00</span>
+          <span class="commit-hash">merge</span>
+        </div>
+        <div class="commit-msg">lunch break</div>
+        <div class="commit-desc">Step away from the keyboard. Food stands on site — lunch money is provided to every attendee.</div>
+        <span class="commit-tag food">covered: lunch money provided</span>
+      </div>
+
+      <div class="commit">
+        <div class="commit-top">
+          <span class="commit-time">14:00 – 15:15</span>
+          <span class="commit-hash">#c4d8a0</span>
+        </div>
+        <div class="commit-msg">feat: branching &amp; merging</div>
+        <div class="commit-desc">Creating branches, merge strategies, and resolving conflicts without breaking into a cold sweat.</div>
+      </div>
+
+      <div class="commit">
+        <div class="commit-top">
+          <span class="commit-time">15:15 – 15:30</span>
+          <span class="commit-hash">#0099pause</span>
+        </div>
+        <div class="commit-msg">chore: short break</div>
+        <div class="commit-desc">Coffee, stretch, reset.</div>
+      </div>
+
+      <div class="commit">
+        <div class="commit-top">
+          <span class="commit-time">15:30 – 16:45</span>
+          <span class="commit-hash">#9f12be</span>
+        </div>
+        <div class="commit-msg">feat: GitHub collaboration workflows</div>
+        <div class="commit-desc">Pull requests, code review etiquette, issues, and working as a team on a shared repository — led directly by the GitHub team.</div>
+      </div>
+
+      <div class="commit">
+        <div class="commit-top">
+          <span class="commit-time">16:45 – 17:45</span>
+          <span class="commit-hash">#5a02ff</span>
+        </div>
+        <div class="commit-msg">feat: build your own repo</div>
+        <div class="commit-desc">A guided hands-on exercise — push your first real project live, with the GitHub team reviewing as you go.</div>
+      </div>
+
+      <div class="commit merge">
+        <div class="commit-top">
+          <span class="commit-time">17:45 – 18:00</span>
+          <span class="commit-hash">merge → main</span>
+        </div>
+        <div class="commit-msg">close: wrap-up, Q&amp;A, networking</div>
+        <div class="commit-desc">Final questions, swag, and a chance to connect with the GitHub team and fellow attendees before close.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="details">
+    <div class="details-grid">
+      <div class="detail-block">
+        <div class="section-title">contributors</div>
+        <div class="host-list">
+          <div class="host-row">
+            <div class="host-avatar host">WM</div>
+            <div>
+              <div class="host-name">Will van der Merwe</div>
+              <div class="host-role">Host &amp; organiser</div>
+            </div>
+          </div>
+          <div class="host-row">
+            <div class="host-avatar team">GH</div>
+            <div>
+              <div class="host-name">The GitHub team</div>
+              <div class="host-role">Supporting facilitators</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="section-title">readme.txt</div>
+        <p class="detail-line">
+          Access: <span class="mono">invite-only</span><br>
+          Bring: <span class="mono">laptop + charger</span><br>
+          Cost: <span class="mono">free — lunch covered</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="recipient">issued to → <span class="name">Don Sanvura</span></div>
+      <div class="rsvp-stamp">⌁ RSVP required to confirm seat</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
