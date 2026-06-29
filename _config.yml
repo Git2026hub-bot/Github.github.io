@@ -1,0 +1,11 @@
+title: Github Pages Site
+description: A simple GitHub Pages site
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-seo-tag
+  - jekyll-github-metadata
+
+# Build settings
+markdown: kramdown
+source: .
+destination: _site
